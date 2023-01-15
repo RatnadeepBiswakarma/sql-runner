@@ -29,10 +29,14 @@
         </button>
       </ul>
       <Editor
-        @selected="handleSourceSelect"
         :selectedOption="getSelectedSource"
-        @sqlQueryInput="handleSqlInput"
         :sqlQueryValue="getActiveTab.sqlQuery"
+        :savedQueries="savedQueries"
+        @selected="handleSourceSelect"
+        @sqlQueryInput="handleSqlInput"
+        @openSavedQuery="handleOpenSavedQueryClick"
+        @removeSavedQuery="handleRemoveSavedQueryClick"
+        @saveQuery="handleSaveQuery"
         @executeQuery="executeQuery"
       />
     </div>
@@ -81,7 +85,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['tabs', 'dataSets']),
+    ...mapState(['tabs', 'dataSets', 'savedQueries']),
     getActiveTab() {
       return this.tabs.find((t) => t.id === this.activeTabId)
     },
@@ -104,12 +108,23 @@ export default {
       'addDataSet',
       'addTabSource',
       'updateSqlQuery',
+      'saveQuery',
+      'removeSavedQuery',
     ]),
     selectTab(tab) {
       this.activeTabId = tab.id
     },
     handleSqlInput(sqlQuery) {
       this.updateSqlQuery({ id: this.activeTabId, sqlQuery })
+    },
+    handleSaveQuery(name) {
+      this.saveQuery({
+        id: uniqid(),
+        name,
+        dataSets: [],
+        source: this.getSelectedSource,
+        sqlQuery: this.getActiveTab.sqlQuery,
+      })
     },
     addNewTab() {
       const id = uniqid()
@@ -121,6 +136,13 @@ export default {
         sqlQuery: '',
       })
       this.activeTabId = id
+    },
+    handleOpenSavedQueryClick(query) {
+      this.createTab(query)
+      this.selectTab({ id: query.id })
+    },
+    handleRemoveSavedQueryClick({ id }) {
+      this.removeSavedQuery(id)
     },
     handleTabRemove(tab) {
       this.removeTab(tab)

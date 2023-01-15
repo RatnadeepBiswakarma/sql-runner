@@ -3,6 +3,15 @@ import { createStore } from 'vuex'
 // Feel free to divide the store into modules as the app grows
 export default createStore({
   state: {
+    savedQueries: [
+      {
+        name: 'Get all customers',
+        id: 'savedQuery1',
+        dataSets: [],
+        source: 'customers',
+        sqlQuery: 'SELECT * FROM customers;',
+      },
+    ],
     tabs: [
       {
         name: 'Query 1',
@@ -10,13 +19,6 @@ export default createStore({
         dataSets: [],
         source: 'products',
         sqlQuery: 'SELECT * FROM products;',
-      },
-      {
-        name: 'Query 2',
-        id: 'defaulttab2',
-        dataSets: [],
-        source: 'customers',
-        sqlQuery: 'SELECT * FROM customers;',
       },
       {
         name: 'Query 3',
@@ -52,6 +54,12 @@ export default createStore({
         tab.sqlQuery = sqlQuery
       }
     },
+    setQuery(state, payload) {
+      state.savedQueries.push(payload)
+    },
+    deleteSavedQuery(state, id) {
+      state.savedQueries = state.savedQueries.filter((q) => q.id !== id)
+    },
   },
   actions: {
     createTab({ commit }, tab) {
@@ -68,6 +76,12 @@ export default createStore({
     },
     updateSqlQuery({ commit }, payload) {
       commit('setSqlQuery', payload)
+    },
+    saveQuery({ commit }, payload) {
+      commit('setQuery', payload)
+    },
+    removeSavedQuery({ commit }, id) {
+      commit('deleteSavedQuery', id)
     },
   },
 })
