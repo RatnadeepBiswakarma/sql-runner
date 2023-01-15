@@ -3,7 +3,15 @@ import { createStore } from 'vuex'
 // Feel free to divide the store into modules as the app grows
 export default createStore({
   state: {
-    tabs: [{ name: 'Query 1', id: 'defaulttab', dataSets: [], source: '' }],
+    tabs: [
+      {
+        name: 'Query 1',
+        id: 'defaulttab',
+        dataSets: [],
+        source: '',
+        sqlQuery: '',
+      },
+    ],
   },
   mutations: {
     setTab(state, tab) {
@@ -24,6 +32,12 @@ export default createStore({
         tab.source = source
       }
     },
+    setSqlQuery(state, { id, sqlQuery }) {
+      const tab = state.tabs.find((t) => t.id === id)
+      if (tab) {
+        tab.sqlQuery = sqlQuery
+      }
+    },
   },
   actions: {
     createTab({ commit }, tab) {
@@ -37,6 +51,9 @@ export default createStore({
     },
     addTabSource({ commit }, payload) {
       commit('setTabSource', payload)
+    },
+    updateSqlQuery({ commit }, payload) {
+      commit('setSqlQuery', payload)
     },
   },
 })

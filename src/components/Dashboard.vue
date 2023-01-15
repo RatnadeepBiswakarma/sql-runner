@@ -31,6 +31,8 @@
       <Editor
         @selected="handleSourceSelect"
         :selectedOption="getSelectedSource"
+        @sqlQueryInput="handleSqlInput"
+        :sqlQueryValue="getActiveTab.sqlQuery"
         @executeQuery="executeQuery"
       />
     </div>
@@ -81,9 +83,18 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['createTab', 'removeTab', 'addDataSet', 'addTabSource']),
+    ...mapActions([
+      'createTab',
+      'removeTab',
+      'addDataSet',
+      'addTabSource',
+      'updateSqlQuery',
+    ]),
     selectTab(tab) {
       this.activeTabId = tab.id
+    },
+    handleSqlInput(sqlQuery) {
+      this.updateSqlQuery({ id: this.activeTabId, sqlQuery })
     },
     addNewTab() {
       const id = uniqid()
@@ -92,6 +103,7 @@ export default {
         id,
         dataSets: [],
         source: '',
+        sqlQuery: '',
       })
       this.activeTabId = id
     },

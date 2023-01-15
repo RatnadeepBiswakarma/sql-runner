@@ -32,6 +32,8 @@
         required
         rows="8"
         placeholder="Enter SQL query"
+        :value="sqlQueryValue"
+        @input="$emit('sqlQueryInput', $event.target.value)"
       ></textarea>
       <div class="w-100 text-end pt-2">
         <button type="submit" class="btn btn-sm btn-primary">
@@ -46,6 +48,10 @@
 export default {
   props: {
     selectedOption: {
+      type: String,
+      default: '',
+    },
+    sqlQueryValue: {
       type: String,
       default: '',
     },
