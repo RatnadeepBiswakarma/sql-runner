@@ -117,7 +117,7 @@ export default {
       this.dataSource = evt.target.value
       this.addTabSource({
         id: this.activeTabId,
-        source: this.getSelectedSource,
+        source: this.dataSource,
       })
     },
     executeQuery() {
