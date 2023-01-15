@@ -132,6 +132,7 @@ export default {
     handleSaveClick() {
       if (this.name) {
         this.$emit('saveQuery', this.name)
+        this.name = ''
       }
     },
   },
