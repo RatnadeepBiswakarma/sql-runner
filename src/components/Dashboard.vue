@@ -138,8 +138,9 @@ export default {
       this.activeTabId = id
     },
     handleOpenSavedQueryClick(query) {
-      this.createTab(query)
-      this.selectTab({ id: query.id })
+      const id = uniqid() // generate new id to avoid tabs with same id
+      this.createTab({ ...query, id })
+      this.selectTab({ id })
     },
     handleRemoveSavedQueryClick({ id }) {
       this.removeSavedQuery(id)
