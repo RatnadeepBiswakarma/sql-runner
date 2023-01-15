@@ -3,8 +3,7 @@ import { createStore } from 'vuex'
 // Feel free to divide the store into modules as the app grows
 export default createStore({
   state: {
-    tabs: [{ name: 'Query 1', id: 'defaulttab' }],
-    dataSets: {},
+    tabs: [{ name: 'Query 1', id: 'defaulttab', dataSets: [], source: '' }],
   },
   mutations: {
     setTab(state, tab) {
@@ -13,13 +12,17 @@ export default createStore({
     removeTab(state, tab) {
       state.tabs = state.tabs.filter((t) => t.id !== tab.id)
     },
-    setDataSet(state, data) {
-      state.dataSets = { ...state.dataSets, ...data }
+    setDataSet(state, payload) {
+      const tab = state.tabs.find((t) => t.id === payload.id)
+      if (tab) {
+        tab.dataSets = payload.data
+      }
     },
-    removeDataSet(state, id) {
-      const localCopy = { ...state.dataSets }
-      delete localCopy[id]
-      state.dataSets = localCopy
+    setTabSource(state, { id, source }) {
+      const tab = state.tabs.find((t) => t.id === id)
+      if (tab) {
+        tab.source = source
+      }
     },
   },
   actions: {
@@ -28,10 +31,12 @@ export default createStore({
     },
     removeTab({ commit }, tab) {
       commit('removeTab', tab)
-      commit('removeDataSet', tab.id)
     },
-    addDataSet({ commit }, data) {
-      commit('setDataSet', data)
+    addDataSet({ commit }, payload) {
+      commit('setDataSet', payload)
+    },
+    addTabSource({ commit }, payload) {
+      commit('setTabSource', payload)
     },
   },
 })

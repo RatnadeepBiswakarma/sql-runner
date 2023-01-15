@@ -3,7 +3,9 @@
     <div class="card p-2 bg-white">
       <h1 class="fs-5 text-center mb-0">SQL Runner</h1>
       <h2 class="fs-6 fw-bold ms-2">All Tabs</h2>
-      <ul class="nav nav-tabs d-flex justify-content-start align-items-center border-bottom-0">
+      <ul
+        class="nav nav-tabs d-flex justify-content-start align-items-center border-bottom-0"
+      >
         <TabButton
           v-for="tab in tabs"
           :key="tab.id"
@@ -66,29 +68,31 @@ export default {
     getActiveTab() {
       return this.tabs.find((t) => t.id === this.activeTabId)
     },
-    getActiveDataSet() {
-      return this.dataSets[this.activeTabId]
-        ? this.dataSets[this.activeTabId]
-        : {}
-    },
     getActiveDataSetList() {
-      return this.getActiveDataSet.list || this.getEmptyTableList
+      return this.getActiveTab.dataSets.length > 0
+        ? this.getActiveTab.dataSets
+        : this.getEmptyTableList
     },
     getEmptyTableList() {
       return Array(20).fill({ '': '' })
     },
     getSelectedSource() {
-      return this.getActiveDataSet.source || ''
+      return this.getActiveTab.source || ''
     },
   },
   methods: {
-    ...mapActions(['createTab', 'removeTab', 'addDataSet']),
+    ...mapActions(['createTab', 'removeTab', 'addDataSet', 'addTabSource']),
     selectTab(tab) {
       this.activeTabId = tab.id
     },
     addNewTab() {
       const id = uniqid()
-      this.createTab({ name: `Query ${this.tabs.length + 1}`, id })
+      this.createTab({
+        name: `Query ${this.tabs.length + 1}`,
+        id,
+        dataSets: [],
+        source: '',
+      })
       this.activeTabId = id
     },
     handleTabRemove(tab) {
@@ -99,6 +103,10 @@ export default {
     },
     handleSourceSelect(evt) {
       this.currentDataSource = evt.target.value
+      this.addTabSource({
+        id: this.activeTabId,
+        source: this.currentDataSource,
+      })
     },
     executeQuery() {
       this.getData(this.currentDataSource)
@@ -108,9 +116,11 @@ export default {
         `https://raw.githubusercontent.com/RatnadeepBiswakarma/json-db/main/${source}.json`
       )
         .then((res) => res.json())
-        .then((json) => {
+        .then((data) => {
+          const id = this.activeTabId
           this.addDataSet({
-            [this.activeTabId]: { list: json, source },
+            id,
+            data,
           })
         })
     },
