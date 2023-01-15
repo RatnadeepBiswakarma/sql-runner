@@ -1,9 +1,9 @@
 <template>
-  <div class="p-2">
-    <h1 class="fs-4 text-center">SQL Runner</h1>
-    <div class="card p-2">
+  <div class="p-3" style="background-color: #d4d4d459">
+    <div class="card p-2 bg-white">
+      <h1 class="fs-5 text-center mb-0">SQL Runner</h1>
       <h2 class="fs-6 fw-bold ms-2">All Tabs</h2>
-      <ul class="nav nav-tabs d-flex justify-content-start align-items-center">
+      <ul class="nav nav-tabs d-flex justify-content-start align-items-center border-bottom-0">
         <TabButton
           v-for="tab in tabs"
           :key="tab.id"
@@ -26,8 +26,22 @@
           />
         </button>
       </ul>
-      <Editor />
-      <!--  -->
+      <Editor
+        @selected="handleSourceSelect"
+        :selectedOption="getSelectedSource"
+        @executeQuery="executeQuery"
+      />
+    </div>
+    <div class="card mt-2">
+      <div class="w-100 text-end py-2 px-3 d-flex justify-content-between">
+        <h2 class="fs-6 fw-bold">Query Result</h2>
+        <button type="button" class="btn btn-sm btn-outline-primary">
+          Download Data Set
+        </button>
+      </div>
+      <div class="table-container">
+        <Table :rows="getActiveDataSetList" class="table-striped table-sm" />
+      </div>
     </div>
   </div>
 </template>
@@ -37,28 +51,44 @@ import Editor from '@/components/Editor.vue'
 import TabButton from '@/components/TabButton.vue'
 import uniqid from 'uniqid'
 import { mapActions, mapState } from 'vuex'
+import Table from '@/components/Table.vue'
 
 export default {
-  components: { Editor, TabButton },
+  components: { Editor, TabButton, Table },
   data() {
     return {
+      currentDataSource: '',
       activeTabId: 'defaulttab',
     }
   },
   computed: {
-    ...mapState(['tabs']),
+    ...mapState(['tabs', 'dataSets']),
     getActiveTab() {
       return this.tabs.find((t) => t.id === this.activeTabId)
     },
+    getActiveDataSet() {
+      return this.dataSets[this.activeTabId]
+        ? this.dataSets[this.activeTabId]
+        : {}
+    },
+    getActiveDataSetList() {
+      return this.getActiveDataSet.list || this.getEmptyTableList
+    },
+    getEmptyTableList() {
+      return Array(20).fill({ '': '' })
+    },
+    getSelectedSource() {
+      return this.getActiveDataSet.source || ''
+    },
   },
   methods: {
-    ...mapActions(['createTab', 'removeTab']),
+    ...mapActions(['createTab', 'removeTab', 'addDataSet']),
     selectTab(tab) {
       this.activeTabId = tab.id
     },
     addNewTab() {
       const id = uniqid()
-      this.createTab({ name: 'New Query', id })
+      this.createTab({ name: `Query ${this.tabs.length + 1}`, id })
       this.activeTabId = id
     },
     handleTabRemove(tab) {
@@ -67,10 +97,32 @@ export default {
         this.activeTabId = this.tabs[0].id
       }
     },
+    handleSourceSelect(evt) {
+      this.currentDataSource = evt.target.value
+    },
+    executeQuery() {
+      this.getData(this.currentDataSource)
+    },
+    getData(source) {
+      fetch(
+        `https://raw.githubusercontent.com/RatnadeepBiswakarma/json-db/main/${source}.json`
+      )
+        .then((res) => res.json())
+        .then((json) => {
+          this.addDataSet({
+            [this.activeTabId]: { list: json, source },
+          })
+        })
+    },
   },
 }
 </script>
 
 <style scoped>
-/*  */
+.table-container {
+  overflow-x: auto;
+  max-width: 100%;
+  max-height: 93vh;
+  transform: translateZ(0);
+}
 </style>
