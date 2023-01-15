@@ -79,6 +79,7 @@
             aria-label="Query name"
             placeholder="Query name"
             aria-describedby="save-query"
+            @keypress.prevent="() => {}"
           />
           <button
             id="save-query"
