@@ -40,7 +40,7 @@
         @executeQuery="executeQuery"
       />
     </div>
-    <div class="card mt-2">
+    <div class="results-container card mt-2">
       <div class="w-100 text-end py-2 px-3 d-flex justify-content-between">
         <h2 class="fs-6 fw-bold">Query Result</h2>
         <div class="d-flex">
@@ -189,10 +189,13 @@ export default {
 </script>
 
 <style scoped>
+.results-container {
+  max-height: calc(100vh - 27.5rem);
+}
+
 .table-container {
   overflow-x: auto;
   max-width: 100%;
-  max-height: 93vh;
   transform: translateZ(0);
 }
 
