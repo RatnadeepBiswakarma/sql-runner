@@ -9,7 +9,7 @@
       <select
         id="data-source"
         required
-        class="form-select color-secondary py-0"
+        class="form-select form-select-sm color-secondary"
         aria-label="Select Data Source"
         @input="$emit('selected', $event)"
       >

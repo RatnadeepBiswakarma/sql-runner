@@ -39,9 +39,24 @@
     <div class="card mt-2">
       <div class="w-100 text-end py-2 px-3 d-flex justify-content-between">
         <h2 class="fs-6 fw-bold">Query Result</h2>
-        <button type="button" class="btn btn-sm btn-outline-primary">
-          Download Data Set
-        </button>
+        <div class="d-flex">
+          <div class="input-group">
+            <select
+              class="form-select form-select-sm format-select"
+              aria-label="Select data set format"
+            >
+              <option selected value="json">JSON</option>
+              <option disabled value="">CSV (coming soon)</option>
+            </select>
+            <button
+              type="button"
+              class="btn btn-sm btn-outline-primary"
+              @click="downloadDataSet"
+            >
+              Download Data Set
+            </button>
+          </div>
+        </div>
       </div>
       <div class="table-container">
         <Table :rows="getActiveDataSetList" class="table-striped table-sm" />
@@ -123,6 +138,15 @@ export default {
     executeQuery() {
       this.getData(this.getSelectedSource)
     },
+    downloadDataSet() {
+      // https://stackoverflow.com/a/30800715/10225466
+      const data = `data:text/json;charset=utf-8,
+        ${encodeURIComponent(JSON.stringify(this.getActiveDataSetList))}`
+      const el = document.createElement('a')
+      el.setAttribute('href', data)
+      el.setAttribute('download', `${this.getSelectedSource}.json`)
+      el.click()
+    },
     getData(source) {
       fetch(
         `https://raw.githubusercontent.com/RatnadeepBiswakarma/json-db/main/${source}.json`
@@ -146,5 +170,11 @@ export default {
   max-width: 100%;
   max-height: 93vh;
   transform: translateZ(0);
+}
+
+select.format-select {
+  max-width: 2rem;
+  color: #0d6efd;
+  border-color: #0d6efd;
 }
 </style>
