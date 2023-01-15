@@ -5,7 +5,7 @@ export default createStore({
   state: {
     savedQueries: [
       {
-        name: 'Get all customers',
+        name: 'List all customers',
         id: 'savedQuery1',
         dataSets: [],
         source: 'customers',
@@ -14,14 +14,14 @@ export default createStore({
     ],
     tabs: [
       {
-        name: 'Query 1',
+        name: 'Get all products',
         id: 'defaulttab',
         dataSets: [],
         source: 'products',
         sqlQuery: 'SELECT * FROM products;',
       },
       {
-        name: 'Query 3',
+        name: 'Fetch all orders',
         id: 'defaulttab3',
         dataSets: [],
         source: 'orders',
