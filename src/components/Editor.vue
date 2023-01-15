@@ -85,12 +85,17 @@
             id="save-query"
             type="button"
             class="btn btn-sm btn-outline-primary"
+            :disabled="!name"
             @click="handleSaveClick"
           >
             Save Query
           </button>
         </div>
-        <button type="submit" class="btn btn-sm btn-primary">
+        <button
+          type="submit"
+          class="btn btn-sm btn-primary"
+          :disabled="!sqlQueryValue"
+        >
           Execute Query
         </button>
       </div>

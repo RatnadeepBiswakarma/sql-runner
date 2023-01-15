@@ -55,6 +55,7 @@
             <button
               type="button"
               class="btn btn-sm btn-outline-primary"
+              :disabled="getActiveTab.dataSets.length === 0"
               @click="downloadDataSet"
             >
               Download Data Set
