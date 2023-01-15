@@ -5,7 +5,7 @@
     <button
       class="nav-link pe-4"
       :class="{ active }"
-      id="home-tab"
+      :id="tab.name"
       type="button"
       role="tab"
       @click="$emit('select', tab)"
