@@ -5,11 +5,11 @@
     @submit.prevent="handleSubmit"
   >
     <div class="left-pane py-2 ps-4 pe-4 border-end">
-      <label for="data-source" class="form-label">Select Data Source</label>
+      <label for="data-source" class="form-label">Data Source</label>
       <select
         id="data-source"
         required
-        class="form-select color-secondary"
+        class="form-select color-secondary py-0"
         aria-label="Select Data Source"
         @input="$emit('selected', $event)"
       >
@@ -25,7 +25,7 @@
       </select>
     </div>
     <div class="editor-pane mt-2 mb-2 mx-4">
-      <label for="sql-query" class="form-label">Enter SQL Query</label>
+      <label for="sql-query" class="form-label">SQL Query</label>
       <textarea
         class="form-control color-secondary"
         id="sql-query"
