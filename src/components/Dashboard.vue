@@ -40,7 +40,7 @@
         @executeQuery="executeQuery"
       />
     </div>
-    <div class="results-container card mt-2">
+    <div class="results-container card mt-2 p-2">
       <div class="w-100 text-end py-2 px-3 d-flex justify-content-between">
         <h2 class="fs-6 fw-bold">Query Result</h2>
         <div class="d-flex">
