@@ -61,7 +61,7 @@ export default {
   components: { Editor, TabButton, Table },
   data() {
     return {
-      currentDataSource: '',
+      dataSource: '',
       activeTabId: 'defaulttab',
     }
   },
@@ -79,7 +79,7 @@ export default {
       return Array(20).fill({ '': '' })
     },
     getSelectedSource() {
-      return this.getActiveTab.source || ''
+      return this.getActiveTab.source || this.dataSource
     },
   },
   methods: {
@@ -114,14 +114,14 @@ export default {
       }
     },
     handleSourceSelect(evt) {
-      this.currentDataSource = evt.target.value
+      this.dataSource = evt.target.value
       this.addTabSource({
         id: this.activeTabId,
-        source: this.currentDataSource,
+        source: this.getSelectedSource,
       })
     },
     executeQuery() {
-      this.getData(this.currentDataSource)
+      this.getData(this.getSelectedSource)
     },
     getData(source) {
       fetch(
