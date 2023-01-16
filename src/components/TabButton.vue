@@ -6,6 +6,7 @@
       class="nav-link pe-4"
       :class="{ active }"
       :id="tab.name"
+      :title="tab.name"
       type="button"
       role="tab"
       @click="$emit('select', tab)"
@@ -56,6 +57,9 @@ export default {
 }
 
 .nav-link {
+  overflow: hidden;
+  max-width: 15rem;
+  white-space: nowrap;
   padding: 0.3rem 1.5rem 0.3rem 0.8rem;
 }
 </style>
