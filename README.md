@@ -10,7 +10,7 @@ Dummy frontend app which simulates the behavior to run SQL query and display the
 
 The SQL query is not run on any real backend. The data displayed is dummy json data taken from [here](https://github.com/graphql-compose/graphql-compose-examples/tree/master/examples/northwind/data/csv)
 
-### Available Features
+### Features
 
 1. Run SQL query and display the results in a table
 2. Open different tabs to run multiple queries simultaneously
