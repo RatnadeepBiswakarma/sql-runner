@@ -56,6 +56,10 @@ yarn install
 yarn start
 ```
 
+**Local app URL**
+
+http://localhost:8080
+
 **Compile and Minify for Production**
 
 ```sh
